@@ -6,7 +6,7 @@ var express = require("express"),
 var mongoose = require('mongoose');
 var port = process.env.PORT || 7000;
 
-mongoose.connect('mongodb://makareno:makareno@ds135179.mlab.com:35179/josebook', (err, res) => {
+mongoose.connect('mongodb://makareno:makareno@ds135179.mlab.com:35179/josebook', { useNewUrlParser: true }, (err, res) => {
 	if (err) {
 		throw err;
 	}
