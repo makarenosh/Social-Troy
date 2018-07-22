@@ -40,7 +40,7 @@ app.use('/api', follow_routes);
 app.use('/api', publication_routes);
 app.use('/api', message_routes);
 
-app.use(express.static((__dirname, 'front-josebook/dist/')));
+app.use(express.static((__dirname, '/dist/')));
 
 /*Configuración de cabeceras HTTP*/
 module.exports = app;
