@@ -122,6 +122,8 @@ function uploadImage(req, res) {
         sharp.cache(false);
         sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
             if (err) { console.log(err); }
+            console.log("BUFFER ---> ");
+            console.log(buffer);
             fs.writeFile(req.files.image.path, buffer, function(e) {
                 if (e) { console.log(e); }
             });
