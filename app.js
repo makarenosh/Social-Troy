@@ -2,7 +2,6 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var webp = require('webp-middleware');
 var app = express();
 
 /*cargar configuración rutas necesarias para la utiliuzacion en las peticiones http*/
