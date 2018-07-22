@@ -144,7 +144,7 @@ function uploadImage(req, res) {
         }
     }
     else {
-        return res.status(200).send({ message: "No se ha ningún fichero imagen" });
+        return res.status(200).send({ message: "No se ha podido subir la imagen" });
     }
 }
 
