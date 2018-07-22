@@ -116,11 +116,14 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
+        console.log('el nombre del fichero es ---> ' + file_name + ", y la extensión es --> " + file_ext);
+
         /*Compresión de la imagen*/
         sharp.cache(false);
         sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
+            if (err) { console.log(err); }
             fs.writeFile(req.files.image.path, buffer, function(e) {
-
+                if (e) { console.log(e); }
             });
         });
 
