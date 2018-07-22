@@ -1,0 +1,35 @@
+{
+  "name": "social-troy",
+  "version": "0.0.0",
+  "description": "Troy conection site",
+  "main": "index1.js",
+  "scripts": {
+    "start": "node index1.js"
+  },
+  "repository": "",
+  "author": "Yo",
+  "dependencies": {
+    "async": "~0.2.8",
+    "babel-core": "^6.26.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "connect-multiparty": "^2.1.0",
+    "express": "^4.0.0",
+    "fs": "0.0.1-security",
+    "install": "^0.11.0",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.22.1",
+    "mongodb": "^3.0.5",
+    "mongoose": "^5.0.12",
+    "mongoose-pagination": "^1.0.0",
+    "mongoose-reverse-populate": "^1.1.0",
+    "path": "^0.12.7",
+    "sharp": "^0.20.4",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "nodemon": "^1.17.3"
+  }
+}
