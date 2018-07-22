@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var path = require('path');
 
 /*cargar configuración rutas necesarias para la utiliuzacion en las peticiones http*/
 // var user_routes = require('./routes/user');
