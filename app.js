@@ -41,6 +41,9 @@ app.use('/api', publication_routes);
 app.use('/api', message_routes);
 
 app.use(express.static((__dirname, '/dist/')));
+app.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'dist/index.html'));
+});
 
 /*Configuración de cabeceras HTTP*/
 module.exports = app;
