@@ -119,15 +119,15 @@ function uploadImage(req, res) {
         console.log('el nombre del fichero es ---> ' + file_name + ", y la extensión es --> " + file_ext);
 
         /*Compresión de la imagen*/
-        sharp.cache(false);
-        sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
-            if (err) { console.log(err); }
-            console.log("BUFFER ---> ");
-            console.log(buffer);
-            fs.writeFile(req.files.image.path, buffer, function(e) {
-                if (e) { console.log(e); }
-            });
-        });
+        // sharp.cache(false);
+        // sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
+        //     if (err) { console.log(err); }
+        //     console.log("BUFFER ---> ");
+        //     console.log(buffer);
+        //     fs.writeFile(req.files.image.path, buffer, function(e) {
+        //         if (e) { console.log(e); }
+        //     });
+        // });
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
             /*Actualizar documento de la publicación*/
