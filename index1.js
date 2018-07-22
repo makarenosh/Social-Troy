@@ -12,8 +12,8 @@ mongoose.connect('mongodb://makareno:makareno@ds135179.mlab.com:35179/josebook',
 	}
 	else {
 		/*Arranco el servidor con socket.io*/
-		server.listen(port, process.env.IP, 'APP_PRIVATE_IP_ADDRESS', function() {
-			console.log('Servidor de API Rest de Josebook funcionando correctamente en ' + process.env.IP);
+		server.listen(port, 'APP_PRIVATE_IP_ADDRESS', function() {
+			console.log('Servidor de API Rest de Josebook funcionando correctamente en ' + process.env);
 		});
 		console.log('Conexion a Mongo Correcta,bbdd funcionando en el puerto ' + port);
 	}
