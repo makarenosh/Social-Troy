@@ -6,6 +6,9 @@ var express = require("express"),
 var mongoose = require('mongoose');
 var port = process.env.PORT || 7000;
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 mongoose.connect('mongodb://makareno:makareno@ds135179.mlab.com:35179/josebook', { useNewUrlParser: true }, (err, res) => {
 	if (err) {
 		throw err;
