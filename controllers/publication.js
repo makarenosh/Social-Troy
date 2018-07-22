@@ -114,7 +114,7 @@ function uploadImage(req, res) {
         console.log("MIRAAAAA ---> " + file_path);
         var file_split = file_path.split('/');
         var file_name = file_split[2];
-        var ext_split = file_name.split('/.');
+        var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
 
         console.log('el nombre del fichero es ---> ' + file_name + ", y la extensión es --> " + file_ext);
@@ -144,7 +144,7 @@ function uploadImage(req, res) {
         }
     }
     else {
-        return res.status(200).send({ message: "No se ha podido subir la imagen" });
+        return res.status(200).send({ message: "No se ha podido subir lher imagen" });
     }
 }
 
