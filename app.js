@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 /*Definición del front*/
-app.use(express.static((__dirname, './front-josebook/dist/')));
+app.use(express.static((__dirname, '/dist/')));
 
 /* configurar cabeceras http*/
 app.use((req, res, next) => {
@@ -40,7 +40,7 @@ app.use('/api', follow_routes);
 app.use('/api', publication_routes);
 app.use('/api', message_routes);
 
-
+app.use(express.static((__dirname, '/dist/')));
 
 /*Configuración de cabeceras HTTP*/
 module.exports = app;
