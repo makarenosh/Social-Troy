@@ -133,8 +133,9 @@ function uploadImage(req, res) {
             });
         });
         
-        cloudinary.uploader.upload("http://troyackson.herokuapp.com/" + file_name, function(result) { 
-            console.log(result) 
+        cloudinary.uploader.upload(file_name, function(result) { 
+          console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+            console.log(result);
         });
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
