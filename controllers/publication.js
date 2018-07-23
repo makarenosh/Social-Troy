@@ -133,11 +133,11 @@ function uploadImage(req, res) {
             });
         });
 
-        cloudinary.uploader.upload(file_name, function(result) {
-            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
-            console.log(result);
-        });
-        cloudinary.v2.uploader.upload("sample.jpg",
+        // cloudinary.uploader.upload(file_name, function(result) {
+        //     console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+        //     console.log(result);
+        // });
+        cloudinary.v2.uploader.upload("file_name",
             function(error, result) {
                 if(error){
                     console.log("ERRORRR!!");
