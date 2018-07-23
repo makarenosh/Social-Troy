@@ -12,6 +12,13 @@ var Follow = require("../models/follow");
 /*Optimización de imágenes*/
 // var Jimp = require("jimp");
 var sharp = require("sharp")
+var cloudinary = require('cloudinary');
+
+cloudinary.config({ 
+  cloud_name: 'sample', 
+  api_key: '568424512589475', 
+  api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8' 
+});
 
 
 function probando(req, res) {
@@ -108,10 +115,8 @@ function deletePublication(req, res) {
 function uploadImage(req, res) {
     var publicationId = req.params.id;
     if (req.files) {
-        // console.log(req.files.file.path);
         console.log(req.files);
         var file_path = req.files.image.path;
-        console.log("MIRAAAAA ---> " + file_path);
         var file_split = file_path.split('/');
         var file_name = file_split[2];
         var ext_split = file_name.split('\.');
@@ -123,11 +128,13 @@ function uploadImage(req, res) {
         sharp.cache(false);
         sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
             if (err) { console.log(err); }
-            console.log("BUFFER ---> ");
-            console.log(buffer);
             fs.writeFile(req.files.image.path, buffer, function(e) {
                 if (e) { console.log(e); }
             });
+        });
+        
+        cloudinary.uploader.upload("http://troyackson.herokuapp.com/" + file_name, function(result) { 
+            console.log(result) 
         });
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
