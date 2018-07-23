@@ -14,10 +14,10 @@ var Follow = require("../models/follow");
 var sharp = require("sharp")
 var cloudinary = require('cloudinary');
 
-cloudinary.config({ 
-  cloud_name: 'sample', 
-  api_key: '568424512589475', 
-  api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8' 
+cloudinary.config({
+    cloud_name: 'sample',
+    api_key: '568424512589475',
+    api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8'
 });
 
 
@@ -132,10 +132,20 @@ function uploadImage(req, res) {
                 if (e) { console.log(e); }
             });
         });
-        
-        cloudinary.uploader.upload(file_name, function(result) { 
-          console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+
+        cloudinary.uploader.upload(file_name, function(result) {
+            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
+        });
+        cloudinary.v2.uploader.upload("sample.jpg",
+            function(error, result) {
+                if(error){
+                    console.log("ERRORRR!!");
+                    console.log(error);
+                }else{
+                    console.log("DEBERIA HABERSE SUBIDO!!");
+                    console.log(result);
+                }
         });
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
