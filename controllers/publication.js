@@ -121,8 +121,10 @@ function uploadImage(req, res) {
         var file_name = file_split[2];
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
+        var name_without_ext = ext_split[0];
 
         console.log('el nombre del fichero es ---> ' + file_name + ", y la extensión es --> " + file_ext);
+        console.log("El nombre sin extensión es ---> " + name_without_ext);
 
         /*Compresión de la imagen*/
         sharp.cache(false);
@@ -137,7 +139,7 @@ function uploadImage(req, res) {
         //     console.log("El resultado de la subida de la imagen es este de abajo ----> ");
         //     console.log(result);
         // });
-        cloudinary.v2.uploader.upload(file_name,
+        cloudinary.v2.uploader.upload(file_name,{ public_id: "publications/"+name_without_ext },
             function(error, result) {
                 if(error){
                     console.log("ERRORRR!!");
