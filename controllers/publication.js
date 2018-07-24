@@ -134,39 +134,31 @@ function uploadImage(req, res) {
         //         if (e) { console.log(e); }
         //     });
         // });
-        
-        cloudinary.image(file_path, {transformation: [
-        //   {aspect_ratio: "4:3", crop: "fill"},
-          {width: "400", dpr: "auto", crop: "scale"}
-          ]})
+
+        cloudinary.image(file_path, {
+            transformation: [
+                //   {aspect_ratio: "4:3", crop: "fill"},
+                { width: "400", dpr: "auto", crop: "scale" }
+            ]
+        })
 
         cloudinary.uploader.upload(file_path, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
+            if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
+                /*Actualizar documento de la publicación*/
+                Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
+                    if (err) return res.status(500).send({ message: "Error en la petición" });
+                    if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
+
+                    return res.status(200).send({ publication: publicacionActualizada });
+                });
+            }
+            else {
+                return removeFilesOfUploads(res, file_path, "Extensión no válida");
+            }
         });
-        // cloudinary.v2.uploader.upload(file_name,{ public_id: "upload/publications/"+name_without_ext },
-        //     function(error, result) {
-        //         if(error){
-        //             console.log("ERRORRR!!");
-        //             console.log(error);
-        //         }else{
-        //             console.log("DEBERIA HABERSE SUBIDO!!");
-        //             console.log(result);
-        //         }
-        // });
 
-        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
-            /*Actualizar documento de la publicación*/
-            Publication.findByIdAndUpdate(publicationId, { file: file_name }, { new: true }, (err, publicacionActualizada) => {
-                if (err) return res.status(500).send({ message: "Error en la petición" });
-                if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
-
-                return res.status(200).send({ publication: publicacionActualizada });
-            });
-        }
-        else {
-            return removeFilesOfUploads(res, file_path, "Extensión no válida");
-        }
     }
     else {
         return res.status(200).send({ message: "No se ha podido subir lher imagen" });
