@@ -127,13 +127,18 @@ function uploadImage(req, res) {
         console.log("El nombre sin extensión es ---> " + name_without_ext);
 
         /*Compresión de la imagen*/
-        sharp.cache(false);
-        sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
-            if (err) { console.log(err); }
-            fs.writeFile(req.files.image.path, buffer, function(e) {
-                if (e) { console.log(e); }
-            });
-        });
+        // sharp.cache(false);
+        // sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
+        //     if (err) { console.log(err); }
+        //     fs.writeFile(req.files.image.path, buffer, function(e) {
+        //         if (e) { console.log(e); }
+        //     });
+        // });
+        
+        cloudinary.image(file_path, {transformation: [
+        //   {aspect_ratio: "4:3", crop: "fill"},
+          {width: "400", dpr: "auto", crop: "scale"}
+          ]})
 
         cloudinary.uploader.upload(file_path, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
