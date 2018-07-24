@@ -139,7 +139,7 @@ function uploadImage(req, res) {
         //     console.log("El resultado de la subida de la imagen es este de abajo ----> ");
         //     console.log(result);
         // });
-        cloudinary.v2.uploader.upload(file_name,{ public_id: "publications/"+name_without_ext },
+        cloudinary.v2.uploader.upload(file_name,{ public_id: "upload/publications/"+name_without_ext },
             function(error, result) {
                 if(error){
                     console.log("ERRORRR!!");
