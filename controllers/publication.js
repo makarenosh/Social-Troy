@@ -135,7 +135,7 @@ function uploadImage(req, res) {
             });
         });
 
-        cloudinary.uploader.upload(file_name, function(result) {
+        cloudinary.uploader.upload(file_path, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
         });
