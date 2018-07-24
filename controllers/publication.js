@@ -135,20 +135,20 @@ function uploadImage(req, res) {
             });
         });
 
-        // cloudinary.uploader.upload(file_name, function(result) {
-        //     console.log("El resultado de la subida de la imagen es este de abajo ----> ");
-        //     console.log(result);
-        // });
-        cloudinary.v2.uploader.upload(file_name,{ public_id: "upload/publications/"+name_without_ext },
-            function(error, result) {
-                if(error){
-                    console.log("ERRORRR!!");
-                    console.log(error);
-                }else{
-                    console.log("DEBERIA HABERSE SUBIDO!!");
-                    console.log(result);
-                }
+        cloudinary.uploader.upload(file_name, function(result) {
+            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+            console.log(result);
         });
+        // cloudinary.v2.uploader.upload(file_name,{ public_id: "upload/publications/"+name_without_ext },
+        //     function(error, result) {
+        //         if(error){
+        //             console.log("ERRORRR!!");
+        //             console.log(error);
+        //         }else{
+        //             console.log("DEBERIA HABERSE SUBIDO!!");
+        //             console.log(result);
+        //         }
+        // });
 
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
             /*Actualizar documento de la publicación*/
