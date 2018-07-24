@@ -15,7 +15,7 @@ var sharp = require("sharp")
 var cloudinary = require('cloudinary');
 
 cloudinary.config({
-    cloud_name: 'sample',
+    cloud_name: 'troyackson',
     api_key: '568424512589475',
     api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8'
 });
