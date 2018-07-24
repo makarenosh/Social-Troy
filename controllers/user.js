@@ -13,6 +13,15 @@ var babel = require("babel-core").transform("code", {
     plugins: ["transform-async-to-generator"]
 });
 
+var cloudinary = require('cloudinary');
+
+cloudinary.config({
+    cloud_name: 'hnxkcwaf2',
+    api_key: '568424512589475',
+    api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8'
+});
+
+
 function home(req, res) {
     res.status(200).send({
         message: "Hola Mundo desde el servidor"
@@ -300,6 +309,18 @@ function uploadImage(req, res) {
             return removeFilesOfUploads(res, file_path, "No tienes permisos para editar este usuario");
         }
 
+        cloudinary.image(file_path, {
+            transformation: [
+                //   {aspect_ratio: "4:3", crop: "fill"},
+                { width: "400", dpr: "auto", crop: "scale" }
+            ]
+        })
+
+        cloudinary.uploader.upload(file_path, function(result) {
+            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+            console.log(result);
+        });
+
         if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
             /*Actualizar documento de usuario loggeado*/
             User.findByIdAndUpdate(userId, { image: file_name }, { new: true }, (err, usuarioActualizado) => {
@@ -354,7 +375,7 @@ function getCounters(req, res) {
 }
 
 /*Cuenta cuantos usuarios me siguen y sigo*/
-async function getCountFollow(user_id) {    
+async function getCountFollow(user_id) {
     var following = await Follow.count({ 'user': user_id }).exec()
         .then((count) => {
             return count;
@@ -372,7 +393,7 @@ async function getCountFollow(user_id) {
 
     var publications = await Publication.count({ 'user': user_id }).exec()
         .then((count) => {
-            console.log("HAY " + count + " PUBLICACIONES DEL USUARIO " + user_id );
+            console.log("HAY " + count + " PUBLICACIONES DEL USUARIO " + user_id);
             return count;
         })
         .catch((err) => {
