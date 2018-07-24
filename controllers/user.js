@@ -319,20 +319,21 @@ function uploadImage(req, res) {
         cloudinary.uploader.upload(file_path, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
+            if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
+                /*Actualizar documento de usuario loggeado*/
+                User.findByIdAndUpdate(userId, { image: result.url }, { new: true }, (err, usuarioActualizado) => {
+                    if (err) return res.status(500).send({ message: "Error en la petición" });
+                    if (!usuarioActualizado) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
+
+                    return res.status(200).send({ user: usuarioActualizado });
+                });
+            }
+            else {
+                return removeFilesOfUploads(res, file_path, "Extensión no válida");
+            }
         });
 
-        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
-            /*Actualizar documento de usuario loggeado*/
-            User.findByIdAndUpdate(userId, { image: file_name }, { new: true }, (err, usuarioActualizado) => {
-                if (err) return res.status(500).send({ message: "Error en la petición" });
-                if (!usuarioActualizado) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
 
-                return res.status(200).send({ user: usuarioActualizado });
-            });
-        }
-        else {
-            return removeFilesOfUploads(res, file_path, "Extensión no válida");
-        }
     }
     else {
         return res.status(200).send({ message: "No se ha ningún fichero imagen" });
