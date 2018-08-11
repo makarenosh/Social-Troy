@@ -7,7 +7,8 @@ var PublicationSchema = Schema({
     text : String,
     file : String,
     created_at : Date,
-    user : {type: Schema.ObjectId, ref : 'User'}
+    user : {type: Schema.ObjectId, ref : 'User'},
+    comments : [{type: Schema.ObjectId, ref : 'Comment'}] 
 });
 
 module.exports = mongoose.model('Publication', PublicationSchema);
