@@ -134,7 +134,7 @@ function uploadImage(req, res) {
         
         
 
-        cloudinary.uploader.upload(file_path, { width: "400", dpr: "auto", crop: "scale" }, function(result) {
+        cloudinary.v2.uploader.upload(file_path, { width: "400", dpr: "auto", crop: "scale" }, function(result) {
 
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
