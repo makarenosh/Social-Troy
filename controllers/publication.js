@@ -112,11 +112,18 @@ function deletePublication(req, res) {
             var ext_split = file_name.split('\.');
             var cloudinary_id = ext_split[0];
             console.log(cloudinary_id);
-            // var file_ext = ext_split[1];
-            // var name_without_ext = ext_split[0];
+           cloudinary.v2.uploader.destroy('zombie', function(error, result){
+               if(error){
+                    console.log(error);
+                    return res.status(200).send(publication);
+               }else{
+                   console.log(result);
+                   return res.status(200).send(publication);
+               }
+           });
         }
         if (err) return res.status(500).send({ message: "Error en la petición" });
-        return res.status(200).send(publication);
+        
     });
 }
 
