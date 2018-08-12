@@ -134,7 +134,7 @@ function uploadImage(req, res) {
 
 
         cloudinary.uploader.upload(file_path, function(result) {
-            cloudinary.image(file_path, { width: 400, crop: " scale ", quality: "auto", q_auto: -"low" })
+            cloudinary.image(result.url, { width: 400, crop: " scale ", quality: "auto", q_auto: -"low" })
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
                 Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
