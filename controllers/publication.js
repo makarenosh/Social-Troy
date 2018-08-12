@@ -106,18 +106,6 @@ function deletePublication(req, res) {
     console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
         if (err) return res.status(500).send({ message: "Error en la petición" });
-        if(publication.file){
-            cloudinary.v2.uploader.destroy(publication.file, function(error, result){
-                if(error){
-                    return res.status(200).send({error: error});    
-                }
-                else{
-                    return res.status(200).send({result: result});    
-                }
-                
-            });    
-        }
-        
         return res.status(200).send(publication);
     });
 }
