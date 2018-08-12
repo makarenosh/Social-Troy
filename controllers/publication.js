@@ -112,7 +112,7 @@ function deletePublication(req, res) {
             var ext_split = file_name.split('\.');
             var cloudinary_id = ext_split[0];
             console.log(cloudinary_id);
-           cloudinary.v2.uploader.destroy('zombie', function(error, result){
+           cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result){
                if(error){
                     console.log(error);
                     return res.status(200).send(publication);
