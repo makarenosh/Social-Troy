@@ -105,6 +105,16 @@ function deletePublication(req, res) {
     var publicationId = req.params.id;
     console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
+        if (publication.file != undefined && publication.file != null) {
+            var file_path = publication.file;
+            var file_split = file_path.split('/');
+            var file_name = file_split[file_split.length-1];
+            var ext_split = file_name.split('\.');
+            var cloudinary_id = ext_split[0];
+            console.log(cloudinary_id);
+            // var file_ext = ext_split[1];
+            // var name_without_ext = ext_split[0];
+        }
         if (err) return res.status(500).send({ message: "Error en la petición" });
         return res.status(200).send(publication);
     });
@@ -136,7 +146,10 @@ function uploadImage(req, res) {
             transformation: [
                 { width: 1000, height: 1000, crop: "limit" }
             ]
-        }, function(err,result) {
+        }, function(err, result) {
+            if (err) {
+                console.log("No se pudo subir la imagen");
+            }
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
