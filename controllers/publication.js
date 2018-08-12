@@ -136,7 +136,7 @@ function uploadImage(req, res) {
             transformation: [
                 { width: 1000, height: 1000, crop: "limit" }
             ]
-        }, function(result) {
+        }, function(err,result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
