@@ -130,16 +130,17 @@ function uploadImage(req, res) {
         //         { width: "400", dpr: "auto", crop: "scale" }
         //     ]
         // })
-
         
         
+        
 
-        cloudinary.v2.uploader.upload(file_path, { width: "400", dpr: "auto", crop: "scale" }, function(result) {
-
+        cloudinary.uploader.upload(file_path, function(result) {
+            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
+            console.log(result);
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
                 Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
-                    if (err) return res.status(500).send({ message: "Error en la petición" });
+                    if (err) return res.status(200).send({ message: "Error en la petición" });
                     if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
 
                     return res.status(200).send({ publication: publicacionActualizada });
