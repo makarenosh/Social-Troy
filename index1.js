@@ -17,13 +17,11 @@ mongoose.connect('mongodb://makareno:makareno@ds135179.mlab.com:35179/josebook',
 	else {
 		/*Arranco el servidor con socket.io*/
 		server.listen(port, function() {
-			console.log('Servidor de API Rest de Josebook funcionando correctamente en ' + process.env);
+			console.log('Servidor de API Rest de troyackson funcionando correctamente en ' + process.env);
 		});
 		console.log('Conexion a Mongo Correcta,bbdd funcionando en el puerto ' + port);
 	}
 });
-
-// server.listen(3000);
 
 //objecto para guardar en la sesión del socket a los que se vayan conectando
 var usuariosOnline = {
