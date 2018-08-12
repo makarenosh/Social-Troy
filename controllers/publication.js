@@ -108,22 +108,23 @@ function deletePublication(req, res) {
         if (publication.file != undefined && publication.file != null) {
             var file_path = publication.file;
             var file_split = file_path.split('/');
-            var file_name = file_split[file_split.length-1];
+            var file_name = file_split[file_split.length - 1];
             var ext_split = file_name.split('\.');
+            /*Aquí se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
             var cloudinary_id = ext_split[0];
-            console.log(cloudinary_id);
-           cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result){
-               if(error){
+            cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result) {
+                if (error) {
                     console.log(error);
                     return res.status(200).send(publication);
-               }else{
-                   console.log(result);
-                   return res.status(200).send(publication);
-               }
-           });
+                }
+                else {
+                    console.log(result);
+                    return res.status(200).send(publication);
+                }
+            });
         }
         if (err) return res.status(500).send({ message: "Error en la petición" });
-        
+
     });
 }
 
@@ -138,16 +139,6 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-
-        // cloudinary.image(file_path, {
-        //     transformation: [
-        //         //   {aspect_ratio: "4:3", crop: "fill"},
-        //         { width: "400", dpr: "auto", crop: "scale" }
-        //     ]
-        // })
-        // cloudinary.v2.uploader.upload('/home/my_image.jpg', { width: 1000, height: 1000, crop: "limit" },
-        //     function(error, result) { console.log(result, error) });
-
 
         cloudinary.v2.uploader.upload(file_path, {
             transformation: [
@@ -202,6 +193,29 @@ function getImageFile(req, res) {
     });
 }
 
+function updatePublication(req, res) {
+    var publicationId = req.params.id;
+    var update = req.body;
+    
+    console.log(update);
+
+    /*Borrar password del objeto*/
+    delete update.password;
+
+    if (publicationId != req.user.sub) {
+        return res.status(500).send({ message: "No tienes permisos para editar este usuario" });
+    }
+    Publication.findByIdAndUpdate(publicationId, update, { new: true }, (err, publication) => {
+        if (err) return res.status(500).send({ message: "Error en la petición" });
+        if (!publication) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
+
+        return res.status(200).send({ publication: publication });
+    });
+
+
+}
+
+
 module.exports = {
     probando,
     savePublication,
@@ -210,5 +224,6 @@ module.exports = {
     deletePublication,
     uploadImage,
     getImageFile,
-    getPublicationsUser
+    getPublicationsUser,
+    updatePublication
 };
