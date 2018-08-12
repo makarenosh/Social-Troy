@@ -121,15 +121,22 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-    
-        cloudinary.image(file_path, {
-            transformation: [
-                //   {aspect_ratio: "4:3", crop: "fill"},
-                { width: "400", dpr: "auto", crop: "scale" }
-            ]
-        })
 
-        cloudinary.v2.uploader.upload(file_path,{width: 500, height: 500, crop: "limit"}, function(result) {
+        // cloudinary.image(file_path, {
+        //     transformation: [
+        //         //   {aspect_ratio: "4:3", crop: "fill"},
+        //         { width: "400", dpr: "auto", crop: "scale" }
+        //     ]
+        // })
+        // cloudinary.v2.uploader.upload('/home/my_image.jpg', { width: 1000, height: 1000, crop: "limit" },
+        //     function(error, result) { console.log(result, error) });
+
+
+        cloudinary.v2.uploader.upload(file_path, {
+            transformation: [
+                { width: 1000, height: 1000, crop: "limit" }
+            ]
+        }, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
