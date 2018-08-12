@@ -125,11 +125,7 @@ function uploadImage(req, res) {
         var name_without_ext = ext_split[0];
 
 
-        cloudinary.v2.uploader.upload(file_path, {
-            transformation: [
-                { width: 500, height: 500, crop: "limit" }
-            ]
-        }, function(result) {
+        cloudinary.v2.uploader.upload(file_path, function(result) {
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
                 Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
