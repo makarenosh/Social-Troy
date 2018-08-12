@@ -123,23 +123,21 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-    
+
         // cloudinary.image(file_path, {
         //     transformation: [
         //         //   {aspect_ratio: "4:3", crop: "fill"},
         //         { width: "400", dpr: "auto", crop: "scale" }
         //     ]
         // })
-        
-        var imagen = cloudinary.image (file_path, { width : 400 , crop : " scale ",quality: "auto", q_auto:-"low" });
-        
-        
 
-        cloudinary.uploader.upload(imagen, function(result) {
-            
+
+
+        cloudinary.uploader.upload(file_path, function(result) {
+            cloudinary.image(file_path, { width: 400, crop: " scale ", quality: "auto", q_auto: -"low" })
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
-                Publication.findByIdAndUpdate(publicationId, { file: cloudinary.image (result.url, { width : 400 , crop : " scale ",quality: "auto", q_auto:-"low" }) }, { new: true }, (err, publicacionActualizada) => {
+                Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
                     if (err) return res.status(500).send({ message: "Error en la petición" });
                     if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
 
