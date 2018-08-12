@@ -124,12 +124,16 @@ function uploadImage(req, res) {
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
     
-        cloudinary.image(file_path, {
-            transformation: [
-                //   {aspect_ratio: "4:3", crop: "fill"},
-                { width: "400", dpr: "auto", crop: "scale" }
-            ]
-        })
+        // cloudinary.image(file_path, {
+        //     transformation: [
+        //         //   {aspect_ratio: "4:3", crop: "fill"},
+        //         { width: "400", dpr: "auto", crop: "scale" }
+        //     ]
+        // })
+        
+        cloudinary.image (file_path, { width : 400 , crop : " scale " })
+        
+        
 
         cloudinary.uploader.upload(file_path, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
