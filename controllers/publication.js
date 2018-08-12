@@ -129,7 +129,7 @@ function uploadImage(req, res) {
             ]
         })
 
-        cloudinary.uploader.upload(file_path, function(result) {
+        cloudinary.v2.uploader.upload(file_path,{width: 500, height: 500, crop: "limit"}, function(result) {
             console.log("El resultado de la subida de la imagen es este de abajo ----> ");
             console.log(result);
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
