@@ -123,7 +123,7 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-
+    
         // cloudinary.image(file_path, {
         //     transformation: [
         //         //   {aspect_ratio: "4:3", crop: "fill"},
@@ -131,16 +131,10 @@ function uploadImage(req, res) {
         //     ]
         // })
 
+        
+        
 
-
-        cloudinary.uploader.upload(file_path, function(result) {
-            // cloudinary.image(result.url, { width: 400, crop: " scale ", quality: "auto", q_auto: -"low" })
-            cloudinary.image(result.url, {
-                transformation: [
-                    //   {aspect_ratio: "4:3", crop: "fill"},
-                    { width: "400", dpr: "auto", crop: "scale" }
-                ]
-            })
+        cloudinary.uploader.upload(file_path, { width: "400", dpr: "auto", crop: "scale" }, function(result) {
 
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
