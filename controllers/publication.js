@@ -131,7 +131,7 @@ function uploadImage(req, res) {
         //     ]
         // })
         
-        cloudinary.image (file_path, { width : 400 , crop : " scale " })
+        cloudinary.image (file_path, { width : 400 , crop : " scale ",quality: "auto", q_auto:low })
         
         
 
