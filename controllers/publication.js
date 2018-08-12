@@ -123,74 +123,77 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-
+    
         // cloudinary.image(file_path, {
         //     transformation: [
         //         //   {aspect_ratio: "4:3", crop: "fill"},
         //         { width: "400", dpr: "auto", crop: "scale" }
         //     ]
         // })
+        
+        cloudinary.v2.uploader.upload('/home/my_image.jpg',
+    {transformation: [
+       {width: 1000, height: 1000, crop: "limit" },
+       {overlay: "my_watermark", flags: "relative", width: 0.5}]},
+    function(error, result) {console.log(result, error)});
 
+        
 
+        cloudinary.v2.uploader.upload(file_path, {transformation: [
+       {width: 500, height: 500, crop: "limit" }]}, function(result, error) {
+            if(error){
+                return res.status(200).send({message: "No se pudo guardar la imagen"});
+            }
+            if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
+                /*Actualizar documento de la publicación*/
+                Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
+                    if (err) return res.status(200).send({ message: "Error en la petición" });
+                    if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
 
-
-        cloudinary.v2.uploader.upload(file_path, {
-                transformation: [
-                    { width: 500, height: 500, crop: "limit" },
-                    function(result, error) {
-                        if (error) {
-                            return res.status(200).send({ message: "No se pudo guardar la imagen" });
-                        }
-                        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
-                            /*Actualizar documento de la publicación*/
-                            Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
-                                if (err) return res.status(200).send({ message: "Error en la petición" });
-                                if (!publicacionActualizada) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
-
-                                return res.status(200).send({ publication: publicacionActualizada });
-                            });
-                        }
-                        else {
-                            return removeFilesOfUploads(res, file_path, "Extensión no válida");
-                        }
-                    });
-
+                    return res.status(200).send({ publication: publicacionActualizada });
+                });
             }
             else {
-                return res.status(200).send({ message: "No se ha podido subir lher imagen" });
+                return removeFilesOfUploads(res, file_path, "Extensión no válida");
             }
+        });
+
+    }
+    else {
+        return res.status(200).send({ message: "No se ha podido subir lher imagen" });
+    }
+}
+
+/*Elimina los ficheros a subir*/
+function removeFilesOfUploads(res, file_path, message) {
+    fs.unlink(file_path, (err) => {
+        if (err) { console.log(err); }
+        return res.status(200).send({ message: message });
+    });
+}
+
+/*Obitnee una imagen de la base de datos*/
+function getImageFile(req, res) {
+    var image_file = req.params.image;
+
+    var path_file = './upload/publications/' + image_file;
+    fs.exists(path_file, (exists) => {
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
         }
-
-        /*Elimina los ficheros a subir*/
-        function removeFilesOfUploads(res, file_path, message) {
-            fs.unlink(file_path, (err) => {
-                if (err) { console.log(err); }
-                return res.status(200).send({ message: message });
-            });
+        else {
+            res.status(200).send({ message: "No existe la imagen" });
         }
+    });
+}
 
-        /*Obitnee una imagen de la base de datos*/
-        function getImageFile(req, res) {
-            var image_file = req.params.image;
-
-            var path_file = './upload/publications/' + image_file;
-            fs.exists(path_file, (exists) => {
-                if (exists) {
-                    res.sendFile(path.resolve(path_file));
-                }
-                else {
-                    res.status(200).send({ message: "No existe la imagen" });
-                }
-            });
-        }
-
-        module.exports = {
-            probando,
-            savePublication,
-            getPublications,
-            getPublication,
-            deletePublication,
-            uploadImage,
-            getImageFile,
-            getPublicationsUser
-        };
+module.exports = {
+    probando,
+    savePublication,
+    getPublications,
+    getPublication,
+    deletePublication,
+    uploadImage,
+    getImageFile,
+    getPublicationsUser
+};
