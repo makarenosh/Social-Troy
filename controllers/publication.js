@@ -140,10 +140,7 @@ function uploadImage(req, res) {
         
 
         cloudinary.v2.uploader.upload(file_path, {transformation: [
-       {width: 500, height: 500, crop: "limit" }]}, function(result, error) {
-            if(error){
-                return res.status(200).send({message: error});
-            }
+       {width: 500, height: 500, crop: "limit" }]}, function(result) {
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
                 Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
