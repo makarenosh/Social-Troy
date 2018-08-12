@@ -33,6 +33,7 @@ function savePublication(req, res) {
     publication.file = null;
     publication.user = req.user.sub;
     publication.created_at = moment();
+    publication.likes = [];
 
     publication.save((err, publicacionGuardada) => {
         if (err) return res.status(500).send({ message: "Error en la petición" });
@@ -104,12 +105,12 @@ function deletePublication(req, res) {
     var publicationId = req.params.id;
     console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
-        console.log("La publixcación que se ha eliminado es la " + publicationId);
         if (err) return res.status(500).send({ message: "Error en la petición" });
-        // if (!publication) return res.status(404).send({ message: "La publicación no se ha borrado!" });
         return res.status(200).send(publication);
     });
 }
+
+
 
 /*SUbir imagen de publicación*/
 function uploadImage(req, res) {
@@ -122,19 +123,7 @@ function uploadImage(req, res) {
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         var name_without_ext = ext_split[0];
-
-        console.log('el nombre del fichero es ---> ' + file_name + ", y la extensión es --> " + file_ext);
-        console.log("El nombre sin extensión es ---> " + name_without_ext);
-
-        /*Compresión de la imagen*/
-        // sharp.cache(false);
-        // sharp(req.files.image.path).resize(350, null).toBuffer(function(err, buffer) {
-        //     if (err) { console.log(err); }
-        //     fs.writeFile(req.files.image.path, buffer, function(e) {
-        //         if (e) { console.log(e); }
-        //     });
-        // });
-
+    
         cloudinary.image(file_path, {
             transformation: [
                 //   {aspect_ratio: "4:3", crop: "fill"},
