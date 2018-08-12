@@ -2493,7 +2493,7 @@ var SidebarComponent = /** @class */ (function () {
 /***/ "./src/app/timeline/timeline.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "\n.comments{\n    padding:30px;\n}\n.comments .comment-img{\n    width: 42px;\n}\n.comments .card{\n    margin-top:20px;\n}\nhr{\n    margin-top: 0;\n}"
+module.exports = "\n.comments{\n    padding-top:15px;\n}\n.comments .comment-img{\n    width: 42px;\n}\n.comments .card{\n    margin-top:20px;\n    border: 1px solid #cef1ff;\n    padding: 20px;\n    border-radius: 7px;\n}\nhr{\n    margin-top: 0;\n    margin-bottom:0;\n    border-color:#dbeaf1;\n}"
 
 /***/ }),
 
