@@ -106,18 +106,24 @@ function deletePublication(req, res) {
             var file_split = file_path.split('/');
             var file_name = file_split[file_split.length - 1];
             var ext_split = file_name.split('\.');
-            /*Aquí se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
-            var cloudinary_id = ext_split[0];
-            cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result) {
-                if (error) {
-                    console.log(error);
-                    return res.status(200).send(publication);
-                }
-                else {
-                    console.log(result);
-                    return res.status(200).send(publication);
-                }
-            });
+
+            /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
+            if (publication.file) {
+                var cloudinary_id = ext_split[0];
+                cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result) {
+                    if (error) {
+                        console.log(error);
+                        return res.status(200).send(publication);
+                    }
+                    else {
+                        console.log(result);
+                        return res.status(200).send(publication);
+                    }
+                });
+            }else{
+                return res.status(200).send(publication);
+            }
+
         }
         if (err) return res.status(500).send({ message: "Error en la petición" });
 
@@ -174,7 +180,7 @@ function removeFilesOfUploads(res, file_path, message) {
     });
 }
 
-/*Obitnee una imagen de la base de datos*/
+/*Obtiene una imagen de la base de datos*/
 function getImageFile(req, res) {
     var image_file = req.params.image;
 
@@ -217,16 +223,6 @@ function addComment(req, res) {
         }
 
     });
-
-
-
-    // Publication.findOneAndUpdate({ age: 17 }, { $set: { name: "Naomi" } }, { new: true }, function(err, doc) {
-    //     if (err) {
-    //         console.log("Something wrong when updating data!");
-    //     }
-
-    //     console.log(doc);
-    // });
 }
 
 module.exports = {
