@@ -192,6 +192,7 @@ function getImageFile(req, res) {
 function addComment(req, res) {
     var params = req.body;
     var comment = new Comment();
+    console.log(params);
     if (params) {
         comment.text = params.text;
         comment.user = params.user;

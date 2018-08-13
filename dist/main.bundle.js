@@ -2621,6 +2621,7 @@ var TimelineComponent = /** @class */ (function () {
     TimelineComponent.prototype.sendComment = function (form) {
         this.comment.user = this.identity._id;
         this.comment.created_at = new Date();
+        console.log("El texto del comentario es ---> " + this.comment.text);
         this._publicationService.addComment(this.token, this.comment).subscribe(function (response) {
             console.log(response);
         }, function (error) {
