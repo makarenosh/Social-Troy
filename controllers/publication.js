@@ -200,13 +200,33 @@ function addComment(req, res) {
         comment.created_at = moment();
     }
 
-    comment.save((err, comentario)=>{
-        if(err){ return res.status(500).send({message: "Error en el servidor"});}
-        if(!comentario){
-            return res.status(404).send({message: "El comentario no pudo guardarse"});
+    comment.save((err, comentario) => {
+        if (err) { return res.status(500).send({ message: "Error en el servidor" }); }
+        if (!comentario) {
+            return res.status(404).send({ message: "El comentario no pudo guardarse" });
         }
-        return res.status(200).send({comentario});
+        else {
+            Publication.findOneAndUpdate({ _id: comment.publication }, { $push: { comments: comment } }, function(err, result) {
+                if (err) {
+                    res.status(500).send({ message: "Error en el servidor" });
+                }
+                else {
+                    return res.status(200).send({ publication: result, comentario: comentario });
+                }
+            });
+        }
+
     });
+
+
+
+    // Publication.findOneAndUpdate({ age: 17 }, { $set: { name: "Naomi" } }, { new: true }, function(err, doc) {
+    //     if (err) {
+    //         console.log("Something wrong when updating data!");
+    //     }
+
+    //     console.log(doc);
+    // });
 }
 
 module.exports = {
