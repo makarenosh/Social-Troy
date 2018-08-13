@@ -9,6 +9,7 @@ var mongoosePaginate = require("mongoose-pagination");
 var Publication = require("../models/publication");
 var User = require("../models/user");
 var Follow = require("../models/follow");
+var Comment = require("../models/comment");
 /*Optimización de imágenes*/
 // var Jimp = require("jimp");
 var sharp = require("sharp")
@@ -19,11 +20,6 @@ cloudinary.config({
     api_key: '568424512589475',
     api_secret: '3OYwPbcU8NFeUimTYQl6U0n--K8'
 });
-
-
-function probando(req, res) {
-    res.status(200).send({ message: "Hola desde Publication Controller" });
-}
 
 function savePublication(req, res) {
     var params = req.body;
@@ -193,31 +189,25 @@ function getImageFile(req, res) {
     });
 }
 
-function updatePublication(req, res) {
-    var publicationId = req.params.id;
-    var update = req.body;
-    
-    console.log(update);
-
-    /*Borrar password del objeto*/
-    delete update.password;
-
-    if (publicationId != req.user.sub) {
-        return res.status(500).send({ message: "No tienes permisos para editar este usuario" });
+function addComment(req, res) {
+    var params = req.body;
+    var comment = new Comment();
+    if (params) {
+        comment.text = params.text;
+        comment.user = params.user;
+        comment.created_at = moment();
     }
-    Publication.findByIdAndUpdate(publicationId, update, { new: true }, (err, publication) => {
-        if (err) return res.status(500).send({ message: "Error en la petición" });
-        if (!publication) return res.status(404).send({ message: "No se ha podido actualizar el usuario" });
 
-        return res.status(200).send({ publication: publication });
+    comment.save((err, comentario)=>{
+        if(err){ return res.status(500).send({message: "Error en el servidor"});}
+        if(!comentario){
+            return res.status(404).send({message: "El comentario no pudo guardarse"});
+        }
+        return res.status(200).send({comentario});
     });
-
-
 }
 
-
 module.exports = {
-    probando,
     savePublication,
     getPublications,
     getPublication,
@@ -225,5 +215,5 @@ module.exports = {
     uploadImage,
     getImageFile,
     getPublicationsUser,
-    updatePublication
+    addComment
 };
