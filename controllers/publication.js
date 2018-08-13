@@ -101,13 +101,14 @@ function deletePublication(req, res) {
     var publicationId = req.params.id;
     console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
+        if (err) return res.status(500).send({ message: "Error en la petición" });
+        /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
         if (publication.file != undefined && publication.file != null) {
             var file_path = publication.file;
             var file_split = file_path.split('/');
             var file_name = file_split[file_split.length - 1];
             var ext_split = file_name.split('\.');
 
-            /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
             if (publication.file) {
                 var cloudinary_id = ext_split[0];
                 cloudinary.v2.uploader.destroy(cloudinary_id, function(error, result) {
@@ -120,12 +121,15 @@ function deletePublication(req, res) {
                         return res.status(200).send(publication);
                     }
                 });
-            }else{
+            }
+            else {
                 return res.status(200).send(publication);
             }
-
         }
-        if (err) return res.status(500).send({ message: "Error en la petición" });
+        else {
+            return res.status(200).send(publication);
+        }
+
 
     });
 }
