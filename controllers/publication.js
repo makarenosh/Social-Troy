@@ -196,6 +196,7 @@ function addComment(req, res) {
     if (params) {
         comment.text = params.text;
         comment.user = params.user;
+        comment.publication = params.publication;
         comment.created_at = moment();
     }
 
