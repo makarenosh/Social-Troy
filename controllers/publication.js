@@ -102,9 +102,9 @@ function deletePublication(req, res) {
     var publicationId = req.params.id;
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
         if (err) return res.status(500).send({ message: "Error en la petición" });
+        /*Si hay comentarios en esta publicación se eliminan*/
         if(publication.comments){
             Publication.update({'_id' : publication._id},{ $pull : { 'comments' : { } } }, function(err, updated){
-                console.log("Eliminados comentarios");
             });
         }
         /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
