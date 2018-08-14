@@ -58,9 +58,9 @@ function getPublications(req, res) {
 // 'user comments'
         Publication.find({ user: { "$in": follows_clean } }).sort('-created_at').populate(
             {
-                path: 'comments',
+                path: 'user comments',
                 populate: { path: 'user' }
-            },{path: 'user'}).paginate(page, items_per_page, (err, publications, total) => {
+            }).paginate(page, items_per_page, (err, publications, total) => {
             if (err) return res.status(500).send({ message: "Error al devolver publicaciones" });
             if (!publications || publications.length == 0) return res.status(404).send({ message: "No hay publicaciones!" });
             // publications.forEach(function(publication) {
