@@ -53,10 +53,11 @@ function getPublications(req, res) {
             follows_clean.push(follow.followed);
         });
         follows_clean.push(req.user.sub);
-        Publication.find({ user: { "$in": follows_clean } }).sort('-created_at').populate({
-            path: 'user comments',
-            populate: { path: 'user' }
-        }).paginate(page, items_per_page, (err, publications, total) => {
+        Publication.find({ user: { "$in": follows_clean } }).sort('-created_at').populate(
+            {
+                path: 'user comments',
+                populate: { path: 'user' }
+            }).paginate(page, items_per_page, (err, publications, total) => {
             if (err) return res.status(500).send({ message: "Error al devolver publicaciones" });
             if (!publications || publications.length == 0) return res.status(404).send({ message: "No hay publicaciones!" });
             return res.status(200).send({ total_items: total, publications, pages: Math.ceil(total / items_per_page), page: page, items_per_page: items_per_page });
@@ -102,13 +103,6 @@ function deletePublication(req, res) {
     console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
         if (err) return res.status(500).send({ message: "Error en la petición" });
-        
-        if (publication.comments && publication.comments.length > 0) {
-            Publication.update({ '_id': publicationId }, { $pull: { "comments": {} } },
-                false,
-                true
-            );
-        }
         /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
         if (publication.file != undefined && publication.file != null) {
             var file_path = publication.file;
