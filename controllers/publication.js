@@ -60,7 +60,7 @@ function getPublications(req, res) {
             {
                 path: 'comments',
                 populate: { path: 'user' }
-            }).paginate(page, items_per_page, (err, publications, total) => {
+            },{path: 'user'}).paginate(page, items_per_page, (err, publications, total) => {
             if (err) return res.status(500).send({ message: "Error al devolver publicaciones" });
             if (!publications || publications.length == 0) return res.status(404).send({ message: "No hay publicaciones!" });
             // publications.forEach(function(publication) {
