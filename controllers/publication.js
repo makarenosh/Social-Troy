@@ -59,14 +59,12 @@ function getPublications(req, res) {
         Publication.find({ user: { "$in": follows_clean } }).sort('-created_at').populate('user comments').paginate(page, items_per_page, (err, publications, total) => {
             if (err) return res.status(500).send({ message: "Error al devolver publicaciones" });
             if (!publications || publications.length == 0) return res.status(404).send({ message: "No hay publicaciones!" });
-            publications.forEach(function(publication) {
-                Comment.populate(publication.comments, { path: 'user' }, function(err, doc) {
-                    return res.status(200).send({ total_items: total, publications, pages: Math.ceil(total / items_per_page), page: page, items_per_page: items_per_page });
-                });
-            });
-
-            
-            
+            // publications.forEach(function(publication) {
+            //     Comment.populate(publication.comments, { path: 'user' }, function(err, doc) {
+            //         return res.status(200).send({ total_items: total, publications, pages: Math.ceil(total / items_per_page), page: page, items_per_page: items_per_page });
+            //     });
+            // });
+            return res.status(200).send({ total_items: total, publications, pages: Math.ceil(total / items_per_page), page: page, items_per_page: items_per_page });
         });
 
     });
