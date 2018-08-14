@@ -100,9 +100,13 @@ function getPublication(req, res) {
 
 function deletePublication(req, res) {
     var publicationId = req.params.id;
-    console.log("El id de la publicación a eliminar es ---> " + publicationId);
     Publication.findByIdAndRemove(publicationId, (err, publication) => {
         if (err) return res.status(500).send({ message: "Error en la petición" });
+        if(publication.comments){
+            Publication.update({'_id' : publication._id},{ $pull : { 'comments' : { } } }, function(err, updated){
+                console.log("Eliminados comentarios");
+            });
+        }
         /*Si la publicación tiene imagen,se consigue el id de cludinarý para poder eliminar la imagen localizándola por el id*/
         if (publication.file != undefined && publication.file != null) {
             var file_path = publication.file;
@@ -130,8 +134,6 @@ function deletePublication(req, res) {
         else {
             return res.status(200).send(publication);
         }
-
-
     });
 }
 
@@ -155,8 +157,7 @@ function uploadImage(req, res) {
             if (err) {
                 console.log("No se pudo subir la imagen");
             }
-            console.log("El resultado de la subida de la imagen es este de abajo ----> ");
-            console.log(result);
+            /*Se comprueba que es una imagen*/
             if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif') {
                 /*Actualizar documento de la publicación*/
                 Publication.findByIdAndUpdate(publicationId, { file: result.url }, { new: true }, (err, publicacionActualizada) => {
